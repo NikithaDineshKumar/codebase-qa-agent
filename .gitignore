@@ -1,0 +1,22 @@
+# Environment
+backend/.env
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Cloned repos (temporary storage)
+backend/repos/
+
+# FAISS index files
+backend/indexes/
+
+# Node modules
+frontend/node_modules/
+
+# Build output
+frontend/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
