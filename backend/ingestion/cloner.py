@@ -1,6 +1,15 @@
 import os
+import stat
 import shutil
 from git import Repo
+
+def handle_remove_readonly(func, path, exc_info):
+    """
+    Error handler for shutil.rmtree on Windows.
+    Handles read-only files by changing permissions and retrying.
+    """
+    os.chmod(path, stat.S_IWRITE)
+    func(path)
 
 def clone_repo(github_url: str, base_dir: str = "repos") -> str:
     """
@@ -18,7 +27,7 @@ def clone_repo(github_url: str, base_dir: str = "repos") -> str:
 
     # If already cloned, delete and re-clone fresh
     if os.path.exists(repo_path):
-        shutil.rmtree(repo_path)
+        shutil.rmtree(repo_path, onerror=handle_remove_readonly)
 
     print(f"Cloning {github_url} into {repo_path}...")
     Repo.clone_from(github_url, repo_path)
